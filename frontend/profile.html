@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SOLU Kütüphanesi | Profil</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -15,14 +15,23 @@
             --text-muted: #666666; --border: #e0e0e0; --success: #2a9d8f; --danger: #d64045;
             --radius: 12px; --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg-body); color: var(--text-main); height: 100vh; display: flex; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'DM Sans', sans-serif; background: var(--bg-body); 
+            color: var(--text-main); height: 100vh; display: flex; overflow: hidden; 
+        }
+
         h1, h2, h3, h4 { font-family: 'Crimson Pro', serif; }
         a { text-decoration: none; color: inherit; }
         button { cursor: pointer; border: none; font-family: inherit; }
 
-        /* --- SIDEBAR --- */
-        .sidebar { width: 280px; background: var(--primary); color: #e0e0e0; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; }
+        /* --- SIDEBAR (RESPONSIVE) --- */
+        .sidebar { 
+            width: 280px; background: var(--primary); color: #e0e0e0; padding: 2rem; 
+            display: flex; flex-direction: column; justify-content: space-between; 
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); flex-shrink: 0; z-index: 100;
+        }
         .brand { font-family: 'Crimson Pro', serif; font-size: 1.8rem; color: var(--accent); display: flex; align-items: center; gap: 10px; margin-bottom: 3rem; }
         .nav-links li { list-style: none; margin-bottom: 1rem; }
         .nav-links a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: var(--radius); transition: 0.3s; font-weight: 500; opacity: 0.8; }
@@ -31,24 +40,36 @@
         .user-mini-profile { display: flex; align-items: center; gap: 10px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
         .avatar-mini { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); background-size: cover; background-position: center; }
 
-        /* --- MAIN CONTENT --- */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 2rem; }
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 90; display: none; opacity: 0; transition: opacity 0.3s;
+            backdrop-filter: blur(3px);
+        }
+        .sidebar-overlay.active { display: block; opacity: 1; }
 
-        /* HEADER CARD (DÜZELTİLDİ) */
+        /* --- MAIN CONTENT --- */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 2rem; position: relative; }
+
+        /* Mobile Header (Sadece Mobilde Görünür) */
+        .mobile-header { display: none; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .menu-toggle { font-size: 1.5rem; color: var(--primary); cursor: pointer; }
+        .mobile-title { font-family: 'Crimson Pro', serif; font-size: 1.5rem; color: var(--primary); font-weight: 600; }
+
+        /* HEADER CARD */
         .profile-header { 
             background: var(--surface); border-radius: var(--radius); padding: 2rem; 
             display: flex; align-items: center; gap: 2rem; box-shadow: var(--shadow); 
             margin-bottom: 2rem; border: 1px solid var(--border); position: relative; 
-            /* overflow: hidden;  <-- BU KALDIRILDI! İçerik taşarsa kesilmesin */
         }
         
         .profile-bg-accent { 
             position: absolute; top: 0; right: 0; width: 150px; height: 100%; 
             background: linear-gradient(90deg, transparent, rgba(212, 163, 115, 0.1)); 
             clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
-            border-top-right-radius: var(--radius); /* Köşe yuvarlatma buraya taşındı */
+            border-top-right-radius: var(--radius);
             border-bottom-right-radius: var(--radius);
-            pointer-events: none; /* Tıklamaları engellemesin */
+            pointer-events: none;
         }
 
         .profile-avatar-large { 
@@ -59,10 +80,8 @@
         }
         
         .edit-avatar-btn { position: absolute; bottom: 0; right: 0; background: var(--accent); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; border: 2px solid white; transition: 0.2s; }
-        .edit-avatar-btn:hover { transform: scale(1.1); }
         
-        /* DÜZELTME: Yazı boyutu ve satır aralığı optimize edildi */
-        .profile-info { flex: 1; }
+        .profile-info { flex: 1; z-index: 1; }
         .profile-info h2 { font-size: 1.8rem; margin-bottom: 8px; color: var(--primary); line-height: 1.2; }
         .profile-status { font-size: 0.95rem; color: var(--success); font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
         .profile-meta { color: var(--text-muted); display: flex; gap: 20px; font-size: 0.9rem; flex-wrap: wrap; }
@@ -72,35 +91,28 @@
         /* GRID DÜZENİ */
         .profile-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 2rem; align-items: start; }
 
-        @media (max-width: 1100px) {
-            .profile-grid { grid-template-columns: 1fr; }
-            .profile-header { flex-direction: column; text-align: center; gap: 1.5rem; }
-            .profile-meta { justify-content: center; }
-        }
-
         .form-card { background: var(--surface); border-radius: var(--radius); padding: 2rem; border: 1px solid var(--border); }
         .card-title { font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 10px; }
         
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
-        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 1rem; } }
-
+        
         .form-group label { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600; }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; background: #fafafa; transition: 0.3s; font-size: 0.95rem; }
         .form-group input:focus { border-color: var(--accent); background: #fff; }
         
-        /* Read Only Mode */
         .read-only-input { background: transparent !important; border: none !important; padding-left: 0 !important; font-weight: 500; color: #333; }
         .hidden { display: none !important; }
 
         .trust-card { background: var(--primary); color: white; border-radius: var(--radius); padding: 2rem; text-align: center; margin-bottom: 2rem; }
         .trust-score-circle { width: 100px; height: 100px; border-radius: 50%; border: 5px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem; font-weight: bold; font-family: 'Crimson Pro'; background: rgba(255,255,255,0.05); }
+        
         .badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .badge-item { background: var(--bg-body); border-radius: 8px; padding: 1rem 0.5rem; text-align: center; border: 1px solid var(--border); transition: 0.3s; opacity: 0.4; filter: grayscale(1); }
         .badge-item.active { opacity: 1; filter: grayscale(0); border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .badge-icon { font-size: 1.5rem; color: var(--primary); margin-bottom: 5px; }
         .badge-name { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); }
 
-        .btn-save { background: var(--primary); color: white; padding: 12px 30px; border-radius: 30px; font-weight: 600; float: right; box-shadow: 0 4px 10px rgba(30, 58, 47, 0.2); cursor: pointer; }
+        .btn-save { background: var(--primary); color: white; padding: 12px 30px; border-radius: 30px; font-weight: 600; float: right; box-shadow: 0 4px 10px rgba(30, 58, 47, 0.2); cursor: pointer; transition: 0.3s; }
         .btn-save:hover { background: var(--primary-light); }
         .btn-logout { width: 100%; padding: 12px; border: 1px solid var(--danger); color: var(--danger); background: transparent; border-radius: 8px; font-weight: 600; margin-top: 1rem; transition: 0.3s; cursor: pointer; }
         .btn-logout:hover { background: #fff0f0; }
@@ -114,11 +126,45 @@
 
         .toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transform: translateY(100px); transition: 0.3s; z-index: 2000; }
         .toast.show { transform: translateY(0); }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 1100px) {
+            .profile-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            /* Sidebar Drawer Logic */
+            .sidebar {
+                position: fixed; top: 0; left: 0; height: 100%;
+                transform: translateX(-100%);
+                box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            }
+            .sidebar.active { transform: translateX(0); }
+            
+            .mobile-header { display: flex; } /* Menü ikonunu göster */
+            .main-content { padding: 1.5rem; }
+
+            /* Profile Header Mobile */
+            .profile-header { flex-direction: column; text-align: center; gap: 1.5rem; padding: 2rem 1rem; }
+            .profile-meta { justify-content: center; gap: 10px; }
+            .profile-bg-accent { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%); width: 100%; height: 80px; border-radius: var(--radius) var(--radius) 0 0; }
+            
+            /* Form Mobile */
+            .form-card { padding: 1.5rem; }
+            .form-row { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
+            .btn-save { width: 100%; margin-top: 10px; }
+
+            /* Books Grid Mobile */
+            .user-books-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 1rem; }
+            .mini-book-img { height: 140px; }
+        }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
         <div>
             <div class="brand"><i class="ri-book-mark-fill"></i> SOLU Kütüphanesi</div>
             <ul class="nav-links">
@@ -137,6 +183,11 @@
 
     <main class="main-content">
         
+        <div class="mobile-header">
+            <i class="ri-menu-line menu-toggle" onclick="toggleSidebar()"></i>
+            <span class="mobile-title">Profilim</span>
+        </div>
+
         <div class="profile-header">
             <div class="profile-bg-accent"></div>
             <div class="profile-avatar-large" id="avatarDisplay">
@@ -236,6 +287,14 @@
         const isVisitorMode = targetUserId && (targetUserId != loggedInUser.id);
         const fetchUserId = isVisitorMode ? targetUserId : loggedInUser.id;
         let displayedUser = null;
+
+        // SIDEBAR TOGGLE FONKSİYONU
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
 
         document.addEventListener("DOMContentLoaded", () => {
             setupUI();

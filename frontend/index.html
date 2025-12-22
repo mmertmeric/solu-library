@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SOLU Kütüphanesi | Topluluk Kütüphanesi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,15 +15,21 @@
             --bg-body: #f4f1ea; --surface: #ffffff; --text-main: #2b2b2b;
             --text-muted: #666666; --border: #e0e0e0; --success: #2a9d8f; --error: #d64045;
             --shadow: 0 4px 20px rgba(0,0,0,0.08); --radius: 12px;
+            --header-height: 80px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        body { font-family: 'DM Sans', sans-serif; background-color: var(--bg-body); color: var(--text-main); height: 100vh; display: flex; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'DM Sans', sans-serif; background-color: var(--bg-body); 
+            color: var(--text-main); height: 100vh; display: flex; overflow: hidden; 
+        }
+        
         h1, h2, h3 { font-family: 'Crimson Pro', serif; }
         a { text-decoration: none; color: inherit; }
         button { cursor: pointer; border: none; font-family: inherit; }
 
-        /* --- LOADING SPINNER (YENİ) --- */
+        /* --- LOADING SPINNER --- */
         #loadingOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-body); z-index: 9999;
@@ -38,79 +44,94 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        /* --------------------------- */
 
-        /* --- SIDEBAR --- */
-        .sidebar { width: 280px; background: var(--primary); color: #e0e0e0; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s; }
+        /* --- SIDEBAR (RESPONSIVE) --- */
+        .sidebar { 
+            width: 280px; background: var(--primary); color: #e0e0e0; padding: 2rem; 
+            display: flex; flex-direction: column; justify-content: space-between; 
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); flex-shrink: 0; z-index: 100;
+        }
         .brand { font-family: 'Crimson Pro', serif; font-size: 1.8rem; color: var(--accent); display: flex; align-items: center; gap: 10px; margin-bottom: 3rem; }
         .nav-links li { list-style: none; margin-bottom: 1rem; }
         .nav-links a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: var(--radius); transition: 0.3s; font-weight: 500; opacity: 0.8; }
         .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.1); opacity: 1; color: #fff; }
         .nav-links a.active { border-left: 4px solid var(--accent); }
         .user-mini-profile { display: flex; align-items: center; gap: 10px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
-        
-        .avatar {
-            width: 40px; height: 40px; border-radius: 50%; background: var(--accent);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; color: var(--primary);
-            background-size: cover; background-position: center; background-repeat: no-repeat;
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); background-size: cover; background-position: center; background-repeat: no-repeat; }
+
+        /* Sidebar Overlay for Mobile */
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 90; display: none; opacity: 0; transition: opacity 0.3s;
+            backdrop-filter: blur(3px);
         }
+        .sidebar-overlay.active { display: block; opacity: 1; }
 
         /* --- MAIN CONTENT --- */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
-        header { background: var(--surface); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-        .search-bar { background: var(--bg-body); padding: 10px 20px; border-radius: 30px; display: flex; align-items: center; gap: 10px; width: 350px; border: 1px solid transparent; transition: 0.3s; }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; position: relative; height: 100%; }
+        
+        header { 
+            background: var(--surface); padding: 1rem 2rem; 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; 
+            gap: 1rem;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1rem; flex: 1; flex-wrap: wrap; }
+        
+        /* Hamburger Menu Button (Mobile Only) */
+        .menu-toggle { display: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; padding: 5px; }
+
+        .search-bar { 
+            background: var(--bg-body); padding: 10px 20px; border-radius: 30px; 
+            display: flex; align-items: center; gap: 10px; width: 300px; 
+            border: 1px solid transparent; transition: 0.3s; 
+        }
         .search-bar:focus-within { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(212, 163, 115, 0.1); }
         .search-bar input { border: none; background: transparent; width: 100%; font-size: 0.95rem; }
-        .add-book-btn { background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(30, 58, 47, 0.3); }
+
+        .filter-options { display: flex; align-items: center; gap: 15px; margin-left: 10px; flex-wrap: wrap; }
+        .checkbox-wrapper { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; user-select: none; }
+        .checkbox-wrapper input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+        .sort-select { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-body); font-family: inherit; font-size: 0.9rem; color: var(--text-main); cursor: pointer; outline: none; }
+
+        .add-book-btn { background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(30, 58, 47, 0.3); white-space: nowrap; }
         .add-book-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
 
         /* Stats */
         .stats-row { padding: 2rem 2rem 1rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         .stat-card { background: var(--surface); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); display: flex; align-items: center; gap: 1rem; }
-        .stat-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(212, 163, 115, 0.15); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .stat-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(212, 163, 115, 0.15); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
         .stat-info h4 { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
         .stat-info p { font-size: 0.9rem; color: var(--text-muted); }
 
         /* Books Grid */
         .content-area { padding: 2rem; }
-        .section-title { margin-bottom: 1.5rem; font-size: 1.5rem; color: var(--primary); }
+        .section-title { margin-bottom: 1.5rem; font-size: 1.5rem; color: var(--primary); display: flex; justify-content: space-between; align-items: center; }
         .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
-        .book-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); transition: all 0.3s ease; }
+        
+        /* Mobile Book Card Adjustments */
+        .book-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); transition: all 0.3s ease; display: flex; flex-direction: column; }
         .book-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--accent); }
         .book-cover { height: 180px; background: #ddd; position: relative; overflow: hidden; }
         .book-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .book-card:hover .book-cover img { transform: scale(1.05); }
 
-        .owner-badge {
-            position: absolute; bottom: 10px; left: 10px;
-            background: rgba(255,255,255,0.95); padding: 5px 10px;
-            border-radius: 20px; font-size: 0.75rem; font-weight: 600;
-            display: flex; align-items: center; gap: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s;
-        }
-        .owner-badge:hover { transform: scale(1.05); background: white; }
-        .owner-avatar {
-            width: 20px; height: 20px; border-radius: 50%;
-            background: var(--primary); color: white;
-            display: flex; align-items: center; justify-content: center; font-size: 0.6rem;
-            background-size: cover; background-position: center; background-repeat: no-repeat;
-        }
+        .owner-badge { position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.95); padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s; }
+        .owner-avatar { width: 20px; height: 20px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; background-size: cover; background-position: center; background-repeat: no-repeat; }
 
-        .card-body { padding: 1.2rem; }
+        .card-body { padding: 1.2rem; display: flex; flex-direction: column; flex: 1; }
         .book-title { font-family: 'Crimson Pro', serif; font-size: 1.25rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--primary); }
         .book-author { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
-        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; border-top: 1px solid #f0f0f0; padding-top: 1rem; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid #f0f0f0; padding-top: 1rem; }
         .status { font-size: 0.8rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; }
         .status.available { background: #e6f4f1; color: var(--success); }
         .status.borrowed { background: #fff0f0; color: var(--error); }
         .action-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; transition: 0.2s; }
-        .action-btn:hover { background: var(--primary); color: white; }
-        .action-btn:disabled { opacity: 0.7; cursor: not-allowed; background: #eee; border-color: #eee; color: #888; }
         .own-book-badge { font-size: 0.85rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 5px; }
 
         /* Modal & Toast */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(5px); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(5px); padding: 20px; }
         .modal-overlay.open { opacity: 1; pointer-events: all; }
         .modal { background: white; width: 100%; max-width: 500px; padding: 2rem; border-radius: var(--radius); transform: translateY(20px); transition: 0.3s; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         .modal-overlay.open .modal { transform: translateY(0); }
@@ -123,6 +144,45 @@
         .btn-cancel { background: #f0f0f0; color: #333; margin-top: 0.5rem; }
         .toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transform: translateY(100px); transition: 0.3s; z-index: 2000; display: flex; align-items: center; gap: 10px; }
         .toast.show { transform: translateY(0); }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            .stats-row { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+            .books-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            /* Sidebar Drawer Logic */
+            .sidebar {
+                position: fixed; top: 0; left: 0; height: 100%;
+                transform: translateX(-100%); /* Başlangıçta gizle */
+                box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            }
+            .sidebar.active { transform: translateX(0); }
+            
+            .menu-toggle { display: block; } /* Hamburger menüyü göster */
+
+            /* Header Layout */
+            header { flex-direction: column; align-items: stretch; gap: 15px; padding: 1rem; }
+            .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+            .header-left { flex-direction: column; align-items: stretch; width: 100%; }
+            .search-bar { width: 100%; }
+            .filter-options { margin-left: 0; justify-content: space-between; margin-top: 5px; }
+            
+            /* Stats Stack */
+            .stats-row { grid-template-columns: 1fr; padding: 1rem; }
+            
+            /* Grid and Padding */
+            .content-area { padding: 1rem; }
+            .books-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+            
+            /* Mobile Typography */
+            .book-title { font-size: 1.1rem; }
+            .book-cover { height: 150px; }
+            
+            /* Add Button */
+            .add-book-btn { width: 100%; justify-content: center; }
+        }
     </style>
 </head>
 <body>
@@ -131,7 +191,9 @@
         <div class="spinner"></div>
     </div>
 
-    <aside class="sidebar">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
         <div>
             <div class="brand">
                 <i class="ri-book-mark-fill"></i> SOLU Kütüphanesi
@@ -156,12 +218,34 @@
 
     <main class="main-content">
         <header>
-            <div class="search-bar">
-                <i class="ri-search-line" style="color: #999;"></i>
-                <input type="text" id="searchInput" placeholder="Kitap ara...">
+            <div class="header-top">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="ri-menu-line menu-toggle" onclick="toggleSidebar()"></i>
+                    <h2 style="font-size: 1.2rem; color: var(--primary); display: none;" id="mobileTitle">Keşfet</h2>
+                </div>
+                </div>
+
+            <div class="header-left">
+                <div class="search-bar">
+                    <i class="ri-search-line" style="color: #999;"></i>
+                    <input type="text" id="searchInput" placeholder="Kitap veya yazar ara...">
+                </div>
+                <div class="filter-options">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="availableFilter"> 
+                        Sadece Müsait
+                    </label>
+                    <select id="sortSelect" class="sort-select">
+                        <option value="newest">En Yeniler</option>
+                        <option value="oldest">En Eskiler</option>
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                    </select>
+                </div>
             </div>
+
             <button class="add-book-btn" onclick="openModal()">
-                <i class="ri-add-line"></i> Kitap Ekle
+                <i class="ri-add-line"></i> <span>Kitap Ekle</span>
             </button>
         </header>
 
@@ -192,6 +276,7 @@
         <div class="content-area">
             <div class="section-title">
                 <h3>Topluluk Kitaplığı</h3>
+                <span style="font-size: 0.9rem; color: #888;" id="resultCount"></span>
             </div>
             <div class="books-grid" id="booksGrid"></div>
         </div>
@@ -223,6 +308,28 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="borrowModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Ödünç İste</h3>
+                <button onclick="closeBorrowModal()"><i class="ri-close-line" style="font-size: 1.5rem;"></i></button>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <p style="color: #666; font-size: 0.9rem;">Şu kitap için istek gönderiyorsun:</p>
+                <h4 id="borrowBookName" style="color: var(--primary); font-size: 1.2rem; margin-top: 5px;">-</h4>
+            </div>
+            
+            <div class="form-group">
+                <label>Kaç günlüğüne istiyorsun?</label>
+                <input type="number" id="borrowDays" min="1" max="30" value="7" placeholder="Gün sayısı">
+                <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">*En fazla 30 gün.</p>
+            </div>
+            
+            <button onclick="submitBorrowRequest()" class="btn-full btn-primary">İstek Gönder</button>
+            <button onclick="closeBorrowModal()" class="btn-full btn-cancel">İptal</button>
+        </div>
+    </div>
+
     <div class="toast" id="toast">
         <i class="ri-checkbox-circle-line" style="font-size: 1.2rem;"></i>
         <span id="toastMessage">İşlem başarılı!</span>
@@ -242,19 +349,48 @@
         const modalOverlay = document.getElementById('modalOverlay');
         const addBookForm = document.getElementById('addBookForm');
         const searchInput = document.getElementById('searchInput');
+        const availableFilter = document.getElementById('availableFilter');
+        const sortSelect = document.getElementById('sortSelect');
+        const resultCountEl = document.getElementById('resultCount');
         const toast = document.getElementById('toast');
         const totalBooksEl = document.getElementById('totalBooks');
         const totalMembersEl = document.getElementById('totalMembers');
         const myContributionEl = document.getElementById('myContribution');
-        const loadingOverlay = document.getElementById('loadingOverlay'); 
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // YENİ: Ödünç alma modalı için elemanlar
+        const borrowModalOverlay = document.getElementById('borrowModalOverlay');
+        const borrowBookNameEl = document.getElementById('borrowBookName');
+        const borrowDaysInput = document.getElementById('borrowDays');
+        let selectedBookIdForBorrow = null;
 
         let userImageMap = {}; 
         let userIdMap = {};    
 
+        // RESPONSIVE SIDEBAR FONKSİYONU
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             fetchCurrentUserAndSidebar();
             fetchAllUsersAndMap(); 
+            
+            // Mobilde başlığı göster
+            if(window.innerWidth <= 768) {
+                document.getElementById('mobileTitle').style.display = 'block';
+            }
         });
+
+        searchInput.addEventListener('keyup', refreshGrid);
+        availableFilter.addEventListener('change', refreshGrid);
+        sortSelect.addEventListener('change', refreshGrid);
+        
+        modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+        borrowModalOverlay.addEventListener('click', (e) => { if (e.target === borrowModalOverlay) closeBorrowModal(); });
 
         function hideLoading() {
             loadingOverlay.style.opacity = '0';
@@ -292,12 +428,12 @@
                 .then(data => {
                     books = data;
                     updateDashboardStats();
-                    renderBooks();
-                    hideLoading(); // VERİ GELDİ, YÜKLEMEYİ GİZLE
+                    refreshGrid(); 
+                    hideLoading(); 
                 })
                 .catch(err => {
                     console.error(err);
-                    hideLoading(); // Hata olsa bile yüklemeyi kapat
+                    hideLoading(); 
                 });
         }
 
@@ -314,7 +450,7 @@
                 })
                 .catch(err => { 
                     totalMembersEl.innerText = "-"; 
-                    fetchBooks(); // Hata olsa da kitapları çekmeye çalış
+                    fetchBooks(); 
                 });
         }
 
@@ -324,14 +460,38 @@
             myContributionEl.innerText = myCount;
         }
 
-        function renderBooks(filterText = "") {
-            booksGrid.innerHTML = "";
-            const filteredBooks = books.filter(book => 
-                book.title.toLowerCase().includes(filterText.toLowerCase()) || 
-                book.author.toLowerCase().includes(filterText.toLowerCase())
-            );
+        function refreshGrid() {
+            const searchText = searchInput.value.toLowerCase();
+            const showOnlyAvailable = availableFilter.checked;
+            const sortMode = sortSelect.value;
 
-            filteredBooks.forEach(book => {
+            let filteredBooks = books.filter(book => {
+                const matchesSearch = book.title.toLowerCase().includes(searchText) || 
+                                      book.author.toLowerCase().includes(searchText);
+                const matchesAvailable = showOnlyAvailable ? (book.status === 'available') : true;
+                return matchesSearch && matchesAvailable;
+            });
+
+            filteredBooks.sort((a, b) => {
+                if (sortMode === 'az') return a.title.localeCompare(b.title);
+                if (sortMode === 'za') return b.title.localeCompare(a.title);
+                if (sortMode === 'newest') return b.id - a.id;
+                if (sortMode === 'oldest') return a.id - b.id;
+                return 0;
+            });
+
+            resultCountEl.innerText = `${filteredBooks.length} kitap bulundu`;
+            renderBooksList(filteredBooks);
+        }
+
+        function renderBooksList(bookList) {
+            booksGrid.innerHTML = "";
+            if (bookList.length === 0) {
+                booksGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 2rem;">Aradığınız kriterlere uygun kitap bulunamadı.</p>`;
+                return;
+            }
+
+            bookList.forEach(book => {
                 const isAvailable = book.status === 'available';
                 const statusText = isAvailable ? "Mevcut" : "Dolu";
                 const statusClass = isAvailable ? "available" : "borrowed";
@@ -356,7 +516,8 @@
                 } else if (!isAvailable) {
                     actionButtonHtml = `<button class="action-btn" disabled><i class="ri-time-line"></i> Başkası Okuyor</button>`;
                 } else {
-                    actionButtonHtml = `<button class="action-btn" onclick="handleBorrow(${book.id})"><i class="ri-hand-coin-line"></i> İstek Gönder</button>`;
+                    // YENİ: openBorrowModal fonksiyonunu çağırıyoruz
+                    actionButtonHtml = `<button class="action-btn" onclick="openBorrowModal(${book.id}, '${book.title}')"><i class="ri-hand-coin-line"></i> İstek Gönder</button>`;
                 }
 
                 const card = document.createElement('div');
@@ -382,6 +543,7 @@
             });
         }
 
+        // --- KİTAP EKLEME ---
         addBookForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const title = document.getElementById('bookTitle').value;
@@ -418,7 +580,7 @@
                 .then(savedBook => {
                     books.push(savedBook);
                     updateDashboardStats();
-                    renderBooks(); 
+                    refreshGrid(); 
                     closeModal();
                     addBookForm.reset();
                     showToast(`"${savedBook.title}" eklendi!`);
@@ -428,22 +590,62 @@
             processBook();
         });
 
+        // --- YENİ: ÖDÜNÇ İSTEME FONKSİYONLARI ---
+        function openBorrowModal(bookId, bookTitle) {
+            selectedBookIdForBorrow = bookId;
+            borrowBookNameEl.innerText = bookTitle;
+            borrowDaysInput.value = 7; // Varsayılan 7 gün
+            borrowModalOverlay.classList.add('open');
+        }
+
+        function closeBorrowModal() {
+            borrowModalOverlay.classList.remove('open');
+            selectedBookIdForBorrow = null;
+        }
+
+        function submitBorrowRequest() {
+            const days = parseInt(borrowDaysInput.value);
+            
+            if(!days || days < 1) {
+                alert("Lütfen geçerli bir gün sayısı girin.");
+                return;
+            }
+
+            const requestData = {
+                bookId: selectedBookIdForBorrow,
+                requesterId: currentUser.id,
+                days: days
+            };
+
+            // Backend API'ye istek at
+            fetch("http://localhost:8080/api/borrow/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestData)
+            })
+            .then(res => {
+                if(res.ok) return res.json();
+                throw new Error("İstek gönderilemedi.");
+            })
+            .then(data => {
+                closeBorrowModal();
+                showToast("İstek başarıyla gönderildi!");
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Bir hata oluştu.");
+            });
+        }
+
         function openModal() { modalOverlay.classList.add('open'); }
         function closeModal() { modalOverlay.classList.remove('open'); }
-        function handleBorrow(id) {
-            const book = books.find(b => b.id === id);
-            if (book && book.status === 'available') {
-                showToast(`"${book.title}" için istek gönderildi. Sahibinin onayı bekleniyor.`);
-            }
-        }
+        
         function showToast(msg) {
             const toastMsg = document.getElementById('toastMessage');
             toastMsg.innerText = msg;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
-        searchInput.addEventListener('keyup', (e) => renderBooks(e.target.value));
-        modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
     </script>
 </body>
 </html>
