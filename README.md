@@ -72,8 +72,8 @@ Projeyi kendi bilgisayarınızda sıfırdan kurmak için aşağıdaki adımları
 ### 2. Projeyi Klonlama
 Terminali açın ve projeyi bilgisayarınıza indirin:
 ```bash
-git clone [https://github.com/KULLANICI_ADINIZ/SOLU-Library.git](https://github.com/KULLANICI_ADINIZ/SOLU-Library.git)
-cd SOLU-Library
+git clone [https://github.com/mmertmeric/solu-library.git](https://github.com/mmertmeric/solu-library.git)
+cd solu-library
 
 ### 3. Veritabanı Kurulumu (H2 Database)
 Bu proje varsayılan olarak **H2 In-Memory Database** kullanır. Yani ekstra bir MySQL veya PostgreSQL kurulumu yapmanıza gerek yoktur. Proje çalıştığında veritabanı bellekte otomatik oluşur.
