@@ -1,6 +1,6 @@
 package com.solu.library.service;
 
-import com.solu.library.entity.Book;
+import com.solu.library.model.Book;
 import com.solu.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

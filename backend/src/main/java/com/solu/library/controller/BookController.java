@@ -1,36 +1,34 @@
 package com.solu.library.controller;
 
-import com.solu.library.entity.Book;
-import com.solu.library.service.BookService;
+import com.solu.library.model.Book;
+import com.solu.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController // Bu sınıfın bir "Web API" olduğunu belirtir.
-@RequestMapping("/api/books") // Adresimiz: http://localhost:8080/api/books
-@CrossOrigin(origins = "*") // Frontend'in (HTML) erişmesine izin ver (Çok Önemli!)
+@RestController
+@RequestMapping("/api/books")
+@CrossOrigin(origins = "*") // Frontend erişimi için
 public class BookController {
 
     @Autowired
-    private BookService bookService;
+    private BookRepository bookRepository;
 
-    // 1. İSTEK: GET (Verileri Getir)
-    // HTML "fetch" yaptığında burası çalışır.
+    // Tüm Kitapları Listele (Vitrin için)
     @GetMapping
-    public List<Book> getAll() {
-        return bookService.getAllBooks();
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
     }
 
-    // 2. İSTEK: POST (Veri Kaydet)
-    // HTML "Kitap Ekle" dediğinde burası çalışır.
+    // Kitap Ekle
     @PostMapping
-    public Book add(@RequestBody Book book) {
-        return bookService.saveBook(book);
+    public Book addBook(@RequestBody Book book) {
+        return bookRepository.save(book);
     }
-    // SİLME İSTEĞİ (DELETE)
-    @DeleteMapping("/{id}") // Örn: /api/books/5 adresine istek gelirse
-    public void delete(@PathVariable Long id) {
-        bookService.deleteBook(id);
+
+    // Kitap Sil (Kütüphanem sayfasında silmek için)
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable Long id) {
+        bookRepository.deleteById(id);
     }
 }

@@ -1,10 +1,11 @@
 package com.solu.library.service;
 
-import com.solu.library.entity.User;
+// DÜZELTME 1: Artık 'entity' değil 'model' paketinden çekiyoruz
+import com.solu.library.model.User;
 import com.solu.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; // <-- BU EKLENDİ
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,11 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    // EKLEME: Profil sayfası için kullanıcıyı ID ile bulma metodu (Frontend bunu istiyor)
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     public User registerUser(User user) {
@@ -33,8 +39,7 @@ public class UserService {
         return null;
     }
 
-    // --- İŞTE SİHİRLİ DOKUNUŞ BURADA ---
-    @Transactional // <--- BU SATIR VERİYİ DİSKE KAZIYACAK
+    @Transactional
     public User updateUser(Long id, User userDetails) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
@@ -48,7 +53,10 @@ public class UserService {
             if(userDetails.getProfileImage() != null) existingUser.setProfileImage(userDetails.getProfileImage());
             if(userDetails.getCurrentStatus() != null) existingUser.setCurrentStatus(userDetails.getCurrentStatus());
 
-            // Kaydet ve hemen diske yaz (saveAndFlush garantidir)
+            // Puan güncellemesi gerekirse diye (güvenlik için null kontrolü)
+            if(userDetails.getTrustScore() != 100) existingUser.setTrustScore(userDetails.getTrustScore());
+
+            // Kaydet ve hemen diske yaz
             return userRepository.saveAndFlush(existingUser);
         }
         return null;
