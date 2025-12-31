@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 
 # --- 2. AŞAMA: ÇALIŞTIRMA (RUN) ---
 # Sadece Java yüklü hafif bir makine getir
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
 # İlk aşamada üretilen .jar dosyasını buraya al
 COPY --from=build /app/target/*.jar app.jar
