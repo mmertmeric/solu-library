@@ -16,10 +16,10 @@ Kullanıcıların paylaşılan tüm kitapları görebildiği, arama ve filtrelem
 
 ### 2. Kitap İstek Süreci
 Bir kitabı ödünç almak için gün sayısı belirterek istek gönderme ekranı.
-<p float="left">
+<div align="center">
   <img src="screenshots/BookRequest.png" width="45%" />
-  <img src="screenshots/BookRequest2.png" width="45%" /> 
-</p>
+  <img src="screenshots/BookRequest2.png" width="45%" />
+</div>
 
 ### 3. Profil ve Rozet Sistemi
 Kullanıcının güven puanını, kazandığı rozetleri (Hızlı, Güvenilir vb.) ve kişisel bilgilerini yönettiği ekran.
@@ -75,22 +75,40 @@ Terminali açın ve projeyi bilgisayarınıza indirin:
 git clone [https://github.com/mmertmeric/solu-library.git](https://github.com/mmertmeric/solu-library.git)
 cd solu-library
 
-### 3. Veritabanı Kurulumu (H2 Database)
-Bu proje varsayılan olarak **H2 In-Memory Database** kullanır. Yani ekstra bir MySQL veya PostgreSQL kurulumu yapmanıza gerek yoktur. Proje çalıştığında veritabanı bellekte otomatik oluşur.
+3. Veritabanı Kurulumu (H2 Database)
+Bu proje varsayılan olarak H2 In-Memory Database kullanır. Yani ekstra bir MySQL veya PostgreSQL kurulumu yapmanıza gerek yoktur. Proje çalıştığında veritabanı bellekte otomatik oluşur.
 
-*Veritabanı Ayarları (`backend/src/main/resources/application.properties`):*
+Veritabanı Ayarları (backend/src/main/resources/application.properties):
 
-```properties
+Properties
 spring.datasource.url=jdbc:h2:mem:librarydb
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 spring.h2.console.enabled=true
+Not: Veritabanı konsoluna http://localhost:8080/h2-console adresinden erişebilirsiniz.
 
-Not: Veritabanı konsoluna http://localhost:8080/h2-console adresinden erişebilirsiniz.4. Backend'i BaşlatmaTerminalde backend klasörüne gidin ve uygulamayı ayağa kaldırın:Bashcd backend
+4. Backend'i Başlatma
+Terminalde backend klasörüne gidin ve uygulamayı ayağa kaldırın:
+
+Bash
+cd backend
 mvn spring-boot:run
-Terminalde Started LibraryApplication in ... seconds yazısını gördüğünüzde sunucu 8080 portunda çalışıyor demektir.5. Frontend'i ÇalıştırmaFrontend tamamen statik dosyalardan oluştuğu için ekstra bir kuruluma (npm install vb.) ihtiyaç duymaz.frontend klasörüne gidin.login.html dosyasına sağ tıklayın ve tarayıcınızda açın (veya VS Code kullanıyorsanız Live Server eklentisi ile açın).Kayıt olun ve uygulamayı kullanmaya başlayın!📂 Proje Klasör YapısıPlaintextSOLU-Library/
+Terminalde Started LibraryApplication in ... seconds yazısını gördüğünüzde sunucu 8080 portunda çalışıyor demektir.
+
+5. Frontend'i Çalıştırma
+Frontend tamamen statik dosyalardan oluştuğu için ekstra bir kuruluma (npm install vb.) ihtiyaç duymaz.
+
+frontend klasörüne gidin.
+
+login.html dosyasına sağ tıklayın ve tarayıcınızda açın (veya VS Code kullanıyorsanız Live Server eklentisi ile açın).
+
+Kayıt olun ve uygulamayı kullanmaya başlayın!
+
+📂 Proje Klasör Yapısı
+Plaintext
+SOLU-Library/
 ├── backend/
 │   ├── src/main/java/com/solu/library/
 │   │   ├── controller/      # API Endpoints (İstekleri karşılar)
@@ -107,8 +125,7 @@ Terminalde Started LibraryApplication in ... seconds yazısını gördüğünüz
 │   └── borrow.html          # Ödünç İşlemleri
 │
 └── screenshots/             # Proje görselleri
+SCREENSHOTS KLASÖRÜNDEN PROJENİN UI GÖRÜNTÜLERİNİ GÖREBİLİRSİNİZ
 
-SCREENSHOTS KLASÖRÜNDEN PROJENİN UI GÖRÜNTÜLERİNİ GÖREBİLİRSİNİZ 
-
-## 🤝 İletişim & Katkı
+🤝 İletişim & Katkı
 Geliştirici: Muhammet Mert Meriç. Bu proje açık kaynaklıdır. Pull request göndererek katkıda bulunabilirsiniz.
