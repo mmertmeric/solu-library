@@ -12,26 +12,26 @@ Uygulamanın temel ekranları ve akışları aşağıdadır:
 
 ### 1. Keşfet ve Vitrin
 Kullanıcıların paylaşılan tüm kitapları görebildiği, arama ve filtreleme yapabildiği ana sayfa.
-![Ana Sayfa](screenshots/HomePage.png)
+![Ana Sayfa](https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/HomePage.png)
 
 ### 2. Kitap İstek Süreci
 Bir kitabı ödünç almak için gün sayısı belirterek istek gönderme ekranı.
 <div align="center">
-  <img src="screenshots/BookRequest.png" width="45%" />
-  <img src="screenshots/BookRequest2.png" width="45%" />
+  <img src="https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/BookRequest.png" width="45%" />
+  <img src="https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/BookRequest2.png" width="45%" />
 </div>
 
 ### 3. Profil ve Rozet Sistemi
 Kullanıcının güven puanını, kazandığı rozetleri (Hızlı, Güvenilir vb.) ve kişisel bilgilerini yönettiği ekran.
-![Profil Sayfası](screenshots/ProfilePage.png)
+![Profil Sayfası](https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/ProfilePage.png)
 
 ### 4. Kütüphane Yönetimi
 Kullanıcının sahip olduğu kitapları listelediği ve gelen ödünç isteklerini yönettiği panel.
-![Kütüphanem](screenshots/myLibraryPage.png)
+![Kütüphanem](https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/myLibraryPage.png)
 
 ### 5. Ödünç Takibi
 Aktif olarak ödünç alınan kitapların süresini ve iade durumlarını takip etme.
-![Ödünç Sayfası](screenshots/BorrowPage.png)
+![Ödünç Sayfası](https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/BorrowPage.png)
 
 ---
 
@@ -74,7 +74,6 @@ Terminali açın ve projeyi bilgisayarınıza indirin:
 ```bash
 git clone [https://github.com/mmertmeric/solu-library.git](https://github.com/mmertmeric/solu-library.git)
 cd solu-library
-
 3. Veritabanı Kurulumu (H2 Database)
 Bu proje varsayılan olarak H2 In-Memory Database kullanır. Yani ekstra bir MySQL veya PostgreSQL kurulumu yapmanıza gerek yoktur. Proje çalıştığında veritabanı bellekte otomatik oluşur.
 
