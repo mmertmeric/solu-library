@@ -12,26 +12,26 @@ Uygulamanın temel ekranları ve akışları aşağıdadır:
 
 ### 1. Keşfet ve Vitrin
 Kullanıcıların paylaşılan tüm kitapları görebildiği, arama ve filtreleme yapabildiği ana sayfa.
-![Ana Sayfa](https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/HomePage.png)
+![Ana Sayfa](https://github.com/mmertmeric/solu-library/blob/main/screenshots/HomePage.png?raw=true)
 
 ### 2. Kitap İstek Süreci
 Bir kitabı ödünç almak için gün sayısı belirterek istek gönderme ekranı.
 <div align="center">
-  <img src="https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/BookRequest.png" width="45%" />
-  <img src="https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/BookRequest2.png" width="45%" />
+  <img src="https://github.com/mmertmeric/solu-library/blob/main/screenshots/BookRequest.png?raw=true" width="45%" />
+  <img src="https://github.com/mmertmeric/solu-library/blob/main/screenshots/BookRequest2.png?raw=true" width="45%" />
 </div>
 
 ### 3. Profil ve Rozet Sistemi
 Kullanıcının güven puanını, kazandığı rozetleri (Hızlı, Güvenilir vb.) ve kişisel bilgilerini yönettiği ekran.
-![Profil Sayfası](https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/ProfilePage.png)
+![Profil Sayfası](https://github.com/mmertmeric/solu-library/blob/main/screenshots/ProfilePage.png?raw=true)
 
 ### 4. Kütüphane Yönetimi
 Kullanıcının sahip olduğu kitapları listelediği ve gelen ödünç isteklerini yönettiği panel.
-![Kütüphanem](https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/myLibraryPage.png)
+![Kütüphanem](https://github.com/mmertmeric/solu-library/blob/main/screenshots/myLibraryPage.png?raw=true)
 
 ### 5. Ödünç Takibi
 Aktif olarak ödünç alınan kitapların süresini ve iade durumlarını takip etme.
-![Ödünç Sayfası](https://raw.githubusercontent.com/mmertmeric/solu-library/main/screenshots/BorrowPage.png)
+![Ödünç Sayfası](https://github.com/mmertmeric/solu-library/blob/main/screenshots/BorrowPage.png?raw=true)
 
 ---
 
